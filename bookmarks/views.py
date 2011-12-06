@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.contrib.auth import logout
 
-from bookmarks.forms import RegistrationForm
+from bookmarks.models import *
+
+from bookmarks.forms import RegistrationForm, BookmarkSaveForm
 
 def main_page(request):
 
@@ -46,3 +48,29 @@ def register_page(request):
     return render_to_response('registration/register.html',
                               {'form': form}
                               )
+
+def bookmark_save_page(request):
+    if request.method == 'POST':
+        form = BookmarkSaveForm(request.POST)
+        if form.is_valid():
+            link, dummy = Link.objects.get_or_create(
+                url=form.cleaned_data['url']
+                )
+            bookmark, created = Bookmarks.objects.get_or_create(
+                user=request.user,
+                link=link
+                )
+            bookmark.title = form.cleaned_data['title']
+            if not created:
+                bookmark.tag_set.clear()
+            tag_names = form.cleaned_data['tags'].split()
+            for tag_name in tag_names:
+                tag, dummy = Tag.objects.get_or_create(name=tag_name)
+                bookmark.tag_set.add(tag)
+            bookmark.save()
+            return HttpResponseRedirect('/user/%s/' % request.user.username)
+    else:
+        form = BookmarkSaveForm()
+
+    return render_to_response('bookmark_save.html', {'form': form})
+

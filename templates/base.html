@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Django Bookmarks | {% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="{{ STATIC_URL }}styles/style.css" type="text/css" />
+  <link href="/static/styles/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -11,9 +11,11 @@
 <div id="nav">
 <a href="/">home<a> |
 {% if user.is_authenticated %}
-welcome {{ user.username }} (<a hef="/logout">logout</a>)
+<a href="/save">submit</a> |
+<a href="/user/{{ user.username }}/"> {{ user.username }} </a> |
+<a href="/logout">logout</a>
 {% else %}
-<a href="/login/">login</login></a> |
+<a href="/login/">login</a> |
 <a href="/register/">register</a>
 {% endif %}
 </div>
