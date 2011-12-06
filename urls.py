@@ -4,6 +4,8 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
+from bookmarks.views import *
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'django_bookmarks.views.home', name='home'),
@@ -14,4 +16,5 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+                       (r'^$', main_page),
 )
