@@ -29,6 +29,8 @@ urlpatterns = patterns('',
                        (r'^register/success/$', direct_to_template,
                         {'template': 'registration/register_success.html'}),
                        (r'^save/$', bookmark_save_page),
+                       (r'^tag/([^\s]+)/$', tag_page),
+                       (r'^tag/$', tag_cloud_page),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -5,8 +5,9 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context
 from django.template.loader import get_template
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 from bookmarks.models import *
 
@@ -17,17 +18,16 @@ def main_page(request):
     return render_to_response('main_page.html', {'user': request.user})
 
 def user_page(request, username):
-    try:
-        user = User.objects.get(username=username)
-    except:
-        raise Http404('Requested user not found.')
+    user = get_object_or_404(User, username=username)
 
-    bookmarks = user.bookmarks_set.all()
+    bookmarks = user.bookmarks_set.order_by('-id')
 
     return render_to_response('user_page.html',
-                              {'username': username,
-                               'bookmarks': bookmarks
+                              {'bookmarks': bookmarks,
+                               'user':request.user,
+                               'show_tags': True
                                })
+@login_required
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
@@ -48,7 +48,7 @@ def register_page(request):
     return render_to_response('registration/register.html',
                               {'form': form}
                               )
-
+@login_required
 def bookmark_save_page(request):
     if request.method == 'POST':
         form = BookmarkSaveForm(request.POST)
@@ -72,5 +72,41 @@ def bookmark_save_page(request):
     else:
         form = BookmarkSaveForm()
 
-    return render_to_response('bookmark_save.html', {'form': form})
+    return render_to_response('bookmark_save.html', {'form': form,
+                                                     'user': request.user})
+def tag_page(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    bookmarks = tag.bookmarks.order_by('-id')
 
+    return render_to_response('tag_page.html',
+                              {
+                                  'bookmarks': bookmarks,
+                                  'tag_name': tag_name,
+                                  'show_tags': True,
+                                  'show_tags': True,
+                                  'user': request.user
+                                  })
+
+def tag_cloud_page(request):
+    MAX_WEIGHT = 5
+    tags = Tag.objects.order_by('name')
+    min_count = max_count = tags[0].bookmarks.count()
+    for tag in tags:
+        tag.count = tag.bookmarks.count()
+        if tag.count < min_count:
+            min_count = tag.count
+        if max_count < tag.count:
+            max_count = tag.count
+
+    range = float(max_count - min_count)
+    if range == 0.0:
+        range = 1.0
+    for tag in tags:
+        tag.weight = int(
+            MAX_WEIGHT * (tag.count - min_count) /range
+            )
+    return render_to_response('tag_cloud_page.html',
+                              {
+                                  'user': request.user,
+                                  'tags': tags
+                                  })

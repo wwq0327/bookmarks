@@ -1,6 +1,8 @@
 # Django settings for django_bookmarks project.
 import os
 
+#import django.contrib.auth
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = True
@@ -45,6 +47,12 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+#login
+LOGIN_URL = '/login'
+
+#logout
+LOGOUT_RUL = '/logout'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -128,6 +136,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_bookmarks.bookmarks',
 )
+
+#django.contrib.auth.LOGIN_RUL = '/login/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
