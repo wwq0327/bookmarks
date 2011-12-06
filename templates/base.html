@@ -3,6 +3,8 @@
 <head>
   <title>Django Bookmarks | {% block title %}{% endblock %}</title>
   <link href="/static/styles/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  {% block external %} {% endblock %}
 </head>
 
 <body>
@@ -14,6 +16,7 @@
 <a href="/save">submit</a> |
 <a href="/user/{{ user.username }}/"> {{ user.username }} </a> |
 <a href="/tag/">Tag Cloud</a> |
+<a href="/search/">search</a> |
 <a href="/logout">logout</a>
 {% else %}
 <a href="/login/">login</a> |
