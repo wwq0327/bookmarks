@@ -26,6 +26,7 @@ def user_page(request, username):
     return render_to_response('user_page.html',
                               {'bookmarks': bookmarks,
                                'user':request.user,
+                               'username':username,
                                'show_tags': True,
                                'show_edit': username == request.user.username
                                })
@@ -173,32 +174,24 @@ def search_page(request):
     form = SearchForm()
     bookmarks = []
     show_results = False
-    if request.GET.has_key('query'):
+    if request.GET.has_key('query'):  ## request.GET获取query的值
         show_results = True
         query = request.GET['query'].strip()
         if query:
             form = SearchForm({'query': query})
             bookmarks = Bookmarks.objects.filter(title__icontains=query)[:10]
 
-    if request.GET.has_key('ajax'):
+    variables = RequestContext(request, {
+        'bookmarks': bookmarks,
+        'show_results': show_results,
+        'show_tags': True,
+        'show_user': True,
+        'user': request.user,
+        'form': form
+        })
 
-        return render_to_response('bookmark_list.html',
-                                  {
-                                      'bookmarks': bookmarks,
-                                      'show_results': show_results,
-                                      'show_tags': True,
-                                      'show_user': True,
-                                      'user': request.user,
-                                      'form': form
-                                      })
+    if request.GET.has_key('ajax'):
+        return render_to_response('bookmark_list.html', variables)
     else:
-        return render_to_response('search.html',
-                                  {
-                                      'bookmarks': bookmarks,
-                                      'show_results': show_results,
-                                      'show_tags': True,
-                                      'show_user': True,
-                                      'user': request.user,
-                                      'form': form
-                                      })
+        return render_to_response('search.html', variables)
 
