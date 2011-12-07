@@ -1,3 +1,7 @@
+{% load comments %}
+
+{% get_comment_count for bookmarks.sharedbookmark shared_bookmark.id as comment_count %}
+
 {% if shared_bookmarks %}
 <ul class="bookmarks">
 {% for shared_bookmark in shared_bookmarks %}
@@ -8,7 +12,7 @@
      Posted By:
      <a href="/user/{{ shared_bookmark.bookmark.user.username }}/" class="username">{{ shared_bookmark.bookmark.user.username }}</a> |
      <span class="vote-count">Votes:
-     {{ shared_bookmark.votes }}</span> | <a href="/bookmark/{{ shared_bookmark.id }}/">Comments</a>
+     {{ shared_bookmark.votes }}</span> | <a href="/bookmark/{{ shared_bookmark.id }}/">Comments</a> {{ comment_count }}
 </li>
 {% endfor %}
 </ul>

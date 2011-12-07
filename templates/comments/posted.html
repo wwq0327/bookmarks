@@ -3,7 +3,7 @@
 {% block head %}Comment Posted Successfully{% endblock %}
 {% block content %}
 <p>Thank you for contributing.</p>
-{% if object %}
+{% if object_pk %}
 <p><a href="/bookmark/{{ object.id }}/">
 View your comment</a></p>
 {% endif %}
