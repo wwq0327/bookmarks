@@ -34,7 +34,7 @@ urlpatterns = patterns('',
                        (r'^search/$', search_page),
                        (r'^vote/$', bookmark_vote_page),
                        (r'^popular/$', popular_page),
-                       (r'^comments/', include('django.contrib.comments.urls.comments')),
+                       (r'^comments/', include('django.contrib.comments.urls')),
                        (r'^bookmark/(\d+)/$', bookmark_page),
 )
 

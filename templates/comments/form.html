@@ -1,11 +1,18 @@
-
+{% load comments %}
 {% if user.is_authenticated %}
-<from action="/comments/post" method="post">
+<form action="{% comment_form_target %}" method="post">
 <p><label>Post a comment:</label><br />
 <textarea name="comment" rows="10" cols="60"></textarea></p>
+<!--
 <input type="hidden" name="options" value="{{ options }}" />
 <input type="hidden" name="target" value="{{ target }}" />
 <input type="hidden" name="gonzo" value=" {{ hash }}" />
+-->
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
 <input type="submit" name="post" value="submit comment" />
 </form>
 {% else %}
