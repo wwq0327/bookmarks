@@ -9,7 +9,7 @@ function bookmark_edit() {
 
 $(document).ready(function () {
     $("ul.bookmarks .edit").click(bookmark_edit);
-});
+);
 
 function bookmark_save() {
     var item = $(this).parent();

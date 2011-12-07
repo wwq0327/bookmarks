@@ -32,6 +32,10 @@ urlpatterns = patterns('',
                        (r'^tag/([^\s]+)/$', tag_page),
                        (r'^tag/$', tag_cloud_page),
                        (r'^search/$', search_page),
+                       (r'^vote/$', bookmark_vote_page),
+                       (r'^popular/$', popular_page),
+                       (r'^comments/', include('django.contrib.comments.urls.comments')),
+                       (r'^bookmark/(\d+)/$', bookmark_page),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
