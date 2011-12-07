@@ -48,3 +48,7 @@ class SearchForm(forms.Form):
         label='Enter a keyword to search for',
         widget=forms.TextInput(attrs={'size': 32}))
 
+class FriendInviteForm(forms.Form):
+    name = forms.CharField(label="Friend\'s Name")
+    email = forms.EmailField(label='Friend\'s Email')
+

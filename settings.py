@@ -5,6 +5,9 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+#pages
+ITEMS_PER_PAGE = 5
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -162,3 +165,11 @@ LOGGING = {
         },
     }
 }
+
+
+SITE_HOST = "127.0.0.1:8000"
+DEFAULT_FROM_EMAIL = 'wwq0327@gmail.com'
+EMAIL_HOST = 'mail.google.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'wwq0327@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxxxxxxxx'  ## password

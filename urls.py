@@ -36,6 +36,10 @@ urlpatterns = patterns('',
                        (r'^popular/$', popular_page),
                        (r'^comments/', include('django.contrib.comments.urls')),
                        (r'^bookmark/(\d+)/$', bookmark_page),
+                       (r'^friends/(\w+)/$', friends_page),
+                       (r'^friend/add/$', friend_add),
+                       (r'^friend/invite/$', friend_invite),
+                       (r'^friend/accept/(\w+)/$', friend_accept),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
