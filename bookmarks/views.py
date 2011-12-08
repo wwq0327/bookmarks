@@ -68,10 +68,14 @@ def user_page(request, username):
 
 @login_required
 def logout_page(request):
+    """退出登录"""
+
     logout(request)
     return HttpResponseRedirect('/')
 
 def register_page(request):
+    """用户注册"""
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -105,6 +109,8 @@ def register_page(request):
 
 def _bookmark_save(request, form):
     # Create or get link
+    # 如果数据存在，则获得数据，此时返回False状态，
+    # 否则，得到新建的数据，并返回True状态
     link, dummy = Link.objects.get_or_create(
         url=form.cleaned_data['url']
         )
@@ -302,7 +308,15 @@ def friend_add(request):
         friend = get_object_or_404(User, username=request.GET['username'])
         friendship = Friendship(from_friend=request.user, to_friend=friend)
 
-        friendship.save()
+        try:
+            friendship.save()
+            request.user.message_set.create(
+                message='%s was added to your friend list.' % friend.username
+                )
+        except:
+            request.user.message_set.create(
+                message='%s already a friend of yours.' % friend.username
+                )
         return HttpResponseRedirect('/friends/%s' % request.user.username)
     else:
         raise Http404
@@ -321,7 +335,15 @@ def friend_invite(request):
                 sender = request.user
                 )
             invitation.save()
-            invitation.send()
+            try:
+                invitation.send()
+                request.user.message_set.create(
+                    message='An invitation was sent to %s' % invitation.email
+                    )
+            except:
+                retuqest.user.message_create(
+                    message='There was an error while sending the invitation.'
+                    )
     else:
         form = FriendInviteForm()
 

@@ -25,6 +25,15 @@
 {% endif %}
 </div>
 <!-- 内容开始 -->
+
+{% if messages %}
+<ul class="message">
+{%for message in messages %}
+<li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
   {% block content %}{% endblock %}
 <!-- 内容结束 -->
 </body>
